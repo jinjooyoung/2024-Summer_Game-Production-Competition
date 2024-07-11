@@ -57,7 +57,7 @@ public class RightPlayerController : MonoBehaviour
     
     void Pickup()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1)) // B 버튼을 누르면
+        if (Input.GetKeyDown(KeyCode.B)) // B 버튼을 누르면
         {
             if (!pickupActivated) // 플레이어가 무언가를 들고 있지 않다면
             {
@@ -81,22 +81,13 @@ public class RightPlayerController : MonoBehaviour
                     heldObject = nearestItem;
                     heldObject.position = holdPosition.position; // 재료의 위치를 holdPosition으로 이동
                     heldObject.SetParent(holdPosition); // 재료를 holdPosition의 자식으로 설정
-                    Debug.Log("재료랑 가깝고 아무것도 들고있지 않아서 재료를 획득합니다");
+                    Debug.Log("재료 획득합니다");
                 }
             }
             else // 플레이어가 무언가를 들고 있으면
             {
-                // 추가 동작 (예: 재료를 내려놓는 기능)
                 Debug.Log("이미 재료를 들고 있습니다.");
             }
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "Stuff")
-        {
-            Debug.Log("재료찾음!");
         }
     }
 }
