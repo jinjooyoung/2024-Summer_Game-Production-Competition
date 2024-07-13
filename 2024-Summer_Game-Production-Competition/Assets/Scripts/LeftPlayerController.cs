@@ -22,6 +22,11 @@ public class LeftPlayerController : MonoBehaviour
     [Header("도마 관련")] 
     public List<Transform> cuttingBoard;
     public List<Transform> cuttingBoardPositions; // 도마에 재료를 놓을 위치의 Transform 리스트
+    private int cuttingPressesRequired = 5; 
+    private int cuttingPressCount = 0;
+
+    [Header("중앙 분리 테이블")] 
+    public List<Transform> shareTablePositions;
 
     void Start()
     {
@@ -30,13 +35,20 @@ public class LeftPlayerController : MonoBehaviour
 
     void Update()
     {
+        MoveLogic();
+        
         if (Input.GetKeyDown(KeyCode.B)) // B 버튼을 누르면
         {
             Pickup();
             PutOnCuttingBoard();
+            PutOnStuffShareTable();
+        }
+
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            CuttingStuff();
         }
         
-        MoveLogic();
     }
 
     void MoveLogic()
@@ -137,6 +149,88 @@ public class LeftPlayerController : MonoBehaviour
             }
         }
         else // 플레이어가 재료를 들고 있지 않은 경우
+        {
+            Debug.Log("플레이어가 재료를 들고 있지 않습니다.");
+        }
+    }
+
+    void CuttingStuff()
+    {
+        for (int i = 0; i < cuttingBoard.Count; i++)
+        {
+            Transform board = cuttingBoard[i];
+            Transform boardPosition = cuttingBoardPositions[i];
+            float distanceToBoard = Vector3.Distance(playerTransform.position, board.position);
+
+            if (distanceToBoard <= maxPickupDistance && boardPosition.childCount > 0) // 플레이어가 도마에 가까이 있고 도마 위에 재료가 있을 경우
+            {
+                Transform ingredient = boardPosition.GetChild(0);
+                Stuff stuff = ingredient.GetComponent<Stuff>();
+
+                if (stuff != null && stuff.stuffType == Stuff.StuffType.NotPrepared) // 재료가 손질되지 않은 경우
+                {
+                    cuttingPressCount++;
+
+                    if (cuttingPressCount >= cuttingPressesRequired)
+                    {
+                        // 손질된 재료로 교체
+                        stuff.stuffType = Stuff.StuffType.PrepIngredients; // StuffType.PrepIngredients는 손질된 상태를 나타냄
+                        Debug.Log("재료 손질 완료!");
+                        cuttingPressCount = 0;
+                    }
+                    else
+                    {
+                        Debug.Log("재료 손질 중... (" + cuttingPressCount + "/" + cuttingPressesRequired + ")");
+                    }
+                    return;
+                }
+                else if (stuff != null && stuff.stuffType == Stuff.StuffType.PrepIngredients)
+                {
+                    Debug.Log("이미 손질된 재료입니다.");
+                    return;
+                }
+            }
+        }
+
+        Debug.Log("도마에 손질할 재료가 없습니다.");
+    }
+
+    void PutOnStuffShareTable()
+    {
+        if (heldObject != null) // 플레이어가 무언가를 들고 있는 경우
+        {
+            Stuff heldStuff = heldObject.GetComponent<Stuff>();
+
+            if (heldStuff != null && heldStuff.stuffType == Stuff.StuffType.PrepIngredients) // 들고 있는 재료가 손질된 경우
+            {
+                for (int i = 0; i < shareTablePositions.Count; i++)
+                {
+                    Transform tablePosition = shareTablePositions[i];
+                    float distanceToTable = Vector3.Distance(playerTransform.position, tablePosition.position);
+
+                    if (distanceToTable <= maxPickupDistance) // 플레이어와 테이블의 거리가 충분히 가까운 경우
+                    {
+                        if (tablePosition.childCount == 0) // 테이블의 재료 포지션이 비어 있는 경우
+                        {
+                            // 재료를 테이블에 내려놓는다
+                            heldObject.SetParent(tablePosition);
+                            heldObject.position = tablePosition.position;
+                            heldObject.rotation = tablePosition.rotation; // 재료의 회전도 테이블의 포지션 회전으로 설정
+                            pickupActivated = false;
+                            heldObject = null;
+                            Debug.Log("재료를 중앙 분리 테이블에 내려놓았습니다.");
+                            return;
+                        }
+                    }
+                }
+                Debug.Log("중앙 분리 테이블의 모든 포지션이 이미 사용 중입니다.");
+            }
+            else
+            {
+                Debug.Log("손질된 재료가 아닙니다. 중앙 분리 테이블에 내려놓을 수 없습니다.");
+            }
+        }
+        else
         {
             Debug.Log("플레이어가 재료를 들고 있지 않습니다.");
         }
