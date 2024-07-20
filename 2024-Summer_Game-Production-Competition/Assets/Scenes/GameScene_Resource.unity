@@ -1641,6 +1641,37 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 54bdf16e32c517743b8952a9842431ae, type: 3}
   m_PrefabInstance: {fileID: 1748797260}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &324728354
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 324728355}
+  m_Layer: 0
+  m_Name: StuffPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &324728355
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 324728354}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.9, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1374926487}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &339256983
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3405,37 +3436,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3, y: 2.4, z: 3}
   m_Center: {x: 0, y: 1.2, z: 0}
---- !u!1 &683578717
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 683578718}
-  m_Layer: 0
-  m_Name: StuffPosition
-  m_TagString: Untagged
-  m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &683578718
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 683578717}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.164, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1374926487}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &703365023 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 1f12b6a15cbc53d41b2fdecfe341e776, type: 3}
@@ -6528,7 +6528,7 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 525d4a7c293a4a9488563aab2d4b7a87, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 683578718}
+      addedObject: {fileID: 324728355}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8164078558771037576, guid: 525d4a7c293a4a9488563aab2d4b7a87, type: 3}
       insertIndex: -1
@@ -7579,7 +7579,7 @@ MonoBehaviour:
   cuttingBoard:
   - {fileID: 1374926487}
   cuttingBoardPositions:
-  - {fileID: 683578718}
+  - {fileID: 324728355}
   shareTablePositions:
   - {fileID: 392009989}
   - {fileID: 630862625}
