@@ -28,6 +28,10 @@ public class RightPlayerController : MonoBehaviour
     [Header("찬장")]
     public List<Transform> cabinetPositions; // 찬장의 위치 Transform 리스트
 
+    [Header("중앙 분리 테이블")]
+    public List<Transform> shareTablePositions;
+    public List<Transform> stuffs; // 상자 안의 재료들의 Transform 리스트
+
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
@@ -41,6 +45,7 @@ public class RightPlayerController : MonoBehaviour
         {
             Pickup();
             PutPlateInCabinet();
+            PIckOnStuffShareTable();
         }
 
         if (Input.GetKey(KeyCode.Alpha2))
@@ -217,6 +222,39 @@ public class RightPlayerController : MonoBehaviour
         else
         {
             Debug.Log("플레이어가 접시를 들고 있지 않습니다.");
+        }
+    }
+
+    void PIckOnStuffShareTable()
+    {
+        if (!pickupActivated) // 플레이어가 무언가를 들고 있지 않다면
+        {
+            Transform nearestStuff = null;
+            float minDistance = float.MaxValue;
+
+            // 모든 재료들과의 거리 계산
+            foreach (Transform itemTransform in stuffs)
+            {
+                float distance = Vector3.Distance(playerTransform.position, itemTransform.position);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    nearestStuff = itemTransform;
+                }
+            }
+
+            if (nearestStuff != null && minDistance <= maxPickupDistance) // 가장 가까운 재료가 충분히 가깝다면
+            {
+                pickupActivated = true; // 재료를 손에 든다
+                heldObject = nearestStuff;
+                heldObject.position = holdPosition.position; // 재료의 위치를 holdPosition으로 이동
+                heldObject.SetParent(holdPosition); // 재료를 holdPosition의 자식으로 설정
+                Debug.Log("접시를 획득합니다.");
+            }
+        }
+        else // 플레이어가 무언가를 들고 있으면
+        {
+            Debug.Log("이미 재료를 들고 있습니다.");
         }
     }
 }

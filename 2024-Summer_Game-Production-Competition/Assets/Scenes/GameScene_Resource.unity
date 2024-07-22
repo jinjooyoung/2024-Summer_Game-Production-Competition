@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028452, g: 0.22571567, b: 0.3069225, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028475, g: 0.22571623, b: 0.30692327, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2021,22 +2021,75 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00e0f6b10ceed864ab789674a5d448f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 15
+  speed: 20
   rotationSpeed: 720
   maxPickupDistance: 4.5
   pickupActivated: 0
   playerTransform: {fileID: 357467351}
   holdPosition: {fileID: 142557739}
-  boxContents:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  plates: []
+  snik: []
+  snikPosition: []
+  washDuration: 2
+  cabinetPositions: []
+  shareTablePositions:
+  - {fileID: 392009989}
+  - {fileID: 630862625}
+  - {fileID: 871393669}
+  - {fileID: 907395391}
+  - {fileID: 255162242}
+  stuffs:
+  - {fileID: 1016312155}
+  - {fileID: 1731331546}
+  - {fileID: 1289643763}
+  - {fileID: 23097552}
+  - {fileID: 539978424}
+  - {fileID: 1433392398}
+  - {fileID: 190367093}
+  - {fileID: 1906968734}
+  - {fileID: 1484109848}
+  - {fileID: 2098258696}
+  - {fileID: 1297909066}
+  - {fileID: 1400934658}
+  - {fileID: 652907588}
+  - {fileID: 761504759}
+  - {fileID: 824573157}
+  - {fileID: 766187138}
+  - {fileID: 877131946}
+  - {fileID: 17017654}
+  - {fileID: 1582888382}
+  - {fileID: 468046495}
+  - {fileID: 1996643173}
+  - {fileID: 1210994302}
+  - {fileID: 123225092}
+  - {fileID: 292531335}
+  - {fileID: 1194268564}
+  - {fileID: 1864631207}
+  - {fileID: 1623114740}
+  - {fileID: 800121452}
+  - {fileID: 1671266588}
+  - {fileID: 1477529650}
+  - {fileID: 1279931252}
+  - {fileID: 1733654174}
+  - {fileID: 1964623302}
+  - {fileID: 920929663}
+  - {fileID: 1914385914}
+  - {fileID: 591799065}
+  - {fileID: 1682707587}
+  - {fileID: 589110135}
+  - {fileID: 89015254}
+  - {fileID: 90970321}
+  - {fileID: 838782219}
+  - {fileID: 1188828456}
+  - {fileID: 349958144}
+  - {fileID: 1748797261}
+  - {fileID: 1951672769}
+  - {fileID: 96981529}
+  - {fileID: 300793563}
+  - {fileID: 718718035}
+  - {fileID: 527286762}
+  - {fileID: 1241233600}
+  - {fileID: 2000262958}
 --- !u!1 &379582295
 GameObject:
   m_ObjectHideFlags: 0
@@ -7518,7 +7571,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f796a478f60b93b4ca8526979b356726, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 15
+  speed: 20
   rotationSpeed: 720
   maxPickupDistance: 4.5
   pickupActivated: 0
