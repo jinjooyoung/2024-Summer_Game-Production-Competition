@@ -28,6 +28,12 @@ public class LeftPlayerController : MonoBehaviour
     [Header("중앙 분리 테이블")] 
     public List<Transform> shareTablePositions;
 
+    [Header("애니메이션")]
+    public Animator animator;
+    public GameObject player;
+    public string speedParameterName = "Speed";
+    public string holdingParameterName = "Holding";
+
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
@@ -69,11 +75,17 @@ public class LeftPlayerController : MonoBehaviour
 
             // 플레이어 회전
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
+            // 애니메이션 파라미터 float 값 코드 추가
+            animator.SetFloat(speedParameterName, inputDirection.magnitude);                            //블랜딩 애니메이션 값에 넣어 준다. 
         }
         else
         {
             // 이동하지 않을 때 속도를 0으로 설정
             rigidbody.velocity = Vector3.zero;
+
+            // 애니메이션 파라미터 float 값 코드 추가
+            animator.SetFloat(speedParameterName, 0);
         }
     }
 
@@ -81,6 +93,9 @@ public class LeftPlayerController : MonoBehaviour
     {
         if (!pickupActivated) // 플레이어가 무언가를 들고 있지 않다면
         {
+            // 애니메이션 파라미터 bool 값 코드 추가
+            animator.SetBool(holdingParameterName, false);
+
             Transform nearestItem = null;
             float minDistance = float.MaxValue;
 
@@ -97,6 +112,9 @@ public class LeftPlayerController : MonoBehaviour
 
             if (nearestItem != null && minDistance <= maxPickupDistance) // 가장 가까운 재료가 충분히 가깝다면
             {
+                // 애니메이션 파라미터 bool 값 코드 추가
+                animator.SetBool(holdingParameterName, true);
+
                 pickupActivated = true; // 재료를 손에 든다
                 heldObject = nearestItem;
                 heldObject.position = holdPosition.position; // 재료의 위치를 holdPosition으로 이동
@@ -106,6 +124,9 @@ public class LeftPlayerController : MonoBehaviour
         }
         else // 플레이어가 무언가를 들고 있으면
         {
+            // 애니메이션 파라미터 bool 값 코드 추가
+            animator.SetBool(holdingParameterName, true);
+
             Debug.Log("이미 재료를 들고 있습니다.");
         }
     }
@@ -114,6 +135,9 @@ public class LeftPlayerController : MonoBehaviour
     {
         if (heldObject != null) // 플레이어가 재료를 들고 있는 경우
         {
+            // 애니메이션 파라미터 bool 값 코드 추가
+            animator.SetBool(holdingParameterName, true);
+
             Stuff heldStuff = heldObject.GetComponent<Stuff>();
 
             if (heldStuff != null && heldStuff.stuffType == Stuff.StuffType.PrepIngredients) // 들고 있는 재료가 손질된 경우
@@ -132,6 +156,9 @@ public class LeftPlayerController : MonoBehaviour
                 {
                     if (boardPosition.childCount == 0) // 도마의 재료 포지션이 비어 있는 경우
                     {
+                        // 애니메이션 파라미터 bool 값 코드 추가
+                        animator.SetBool(holdingParameterName, false);
+
                         // 재료를 도마에 내려놓는다
                         heldObject.SetParent(boardPosition);
                         heldObject.position = boardPosition.position;
@@ -150,6 +177,9 @@ public class LeftPlayerController : MonoBehaviour
         }
         else // 플레이어가 재료를 들고 있지 않은 경우
         {
+            // 애니메이션 파라미터 bool 값 코드 추가
+            animator.SetBool(holdingParameterName, false);
+
             Debug.Log("플레이어가 재료를 들고 있지 않습니다.");
         }
     }
@@ -199,6 +229,9 @@ public class LeftPlayerController : MonoBehaviour
     {
         if (heldObject != null) // 플레이어가 무언가를 들고 있는 경우
         {
+            // 애니메이션 파라미터 bool 값 코드 추가
+            animator.SetBool(holdingParameterName, true);
+
             Stuff heldStuff = heldObject.GetComponent<Stuff>();
 
             if (heldStuff != null && heldStuff.stuffType == Stuff.StuffType.PrepIngredients) // 들고 있는 재료가 손질된 경우
@@ -212,6 +245,9 @@ public class LeftPlayerController : MonoBehaviour
                     {
                         if (tablePosition.childCount == 0) // 테이블의 재료 포지션이 비어 있는 경우
                         {
+                            // 애니메이션 파라미터 bool 값 코드 추가
+                            animator.SetBool(holdingParameterName, false);
+
                             // 재료를 테이블에 내려놓는다
                             heldObject.SetParent(tablePosition);
                             heldObject.position = tablePosition.position;
@@ -232,6 +268,9 @@ public class LeftPlayerController : MonoBehaviour
         }
         else
         {
+            // 애니메이션 파라미터 bool 값 코드 추가
+            animator.SetBool(holdingParameterName, false);
+
             Debug.Log("플레이어가 재료를 들고 있지 않습니다.");
         }
     }

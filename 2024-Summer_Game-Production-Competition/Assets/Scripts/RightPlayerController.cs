@@ -30,6 +30,12 @@ public class RightPlayerController : MonoBehaviour
     [Header("중앙 분리 테이블")]
     public List<Transform> stuffs; // 상자 안의 재료들의 Transform 리스트
 
+    [Header("애니메이션")]
+    public Animator animator;
+    public GameObject player;
+    public string speedParameterName = "Speed";
+    public string holdingParameterName = "Holding";
+
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
@@ -82,11 +88,17 @@ public class RightPlayerController : MonoBehaviour
 
             // 플레이어 회전
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
+            // 애니메이션 파라미터 float 값 코드 추가
+            animator.SetFloat(speedParameterName, inputDirection.magnitude);                            //블랜딩 애니메이션 값에 넣어 준다. 
         }
         else
         {
             // 이동하지 않을 때 속도를 0으로 설정
             rigidbody.velocity = Vector3.zero;
+
+            // 애니메이션 파라미터 float 값 코드 추가
+            animator.SetFloat(speedParameterName, 0);
         }
     }
 
@@ -94,6 +106,9 @@ public class RightPlayerController : MonoBehaviour
     {
         if (!pickupActivated) // 플레이어가 무언가를 들고 있지 않다면
         {
+            // 애니메이션 파라미터 bool 값 코드 추가
+            animator.SetBool(holdingParameterName, false);
+
             Transform nearestPlate = null;
             float minDistance = float.MaxValue;
 
@@ -110,6 +125,9 @@ public class RightPlayerController : MonoBehaviour
 
             if (nearestPlate != null && minDistance <= maxPickupDistance) // 가장 가까운 접시가 충분히 가깝다면
             {
+                // 애니메이션 파라미터 bool 값 코드 추가
+                animator.SetBool(holdingParameterName, true);
+
                 pickupActivated = true; // 접시를 손에 든다
                 heldObject = nearestPlate;
                 heldObject.position = holdPosition.position; // 접시의 위치를 holdPosition으로 이동
@@ -119,6 +137,9 @@ public class RightPlayerController : MonoBehaviour
         }
         else // 플레이어가 무언가를 들고 있으면
         {
+            // 애니메이션 파라미터 bool 값 코드 추가
+            animator.SetBool(holdingParameterName, true);
+
             Debug.Log("이미 접시를 들고 있습니다.");
         }
     }
@@ -127,6 +148,9 @@ public class RightPlayerController : MonoBehaviour
     {
         if (heldObject != null)
         {
+            // 애니메이션 파라미터 bool 값 코드 추가
+            animator.SetBool(holdingParameterName, true);
+
             Plate heldPlate = heldObject.GetComponent<Plate>();
 
             if (heldPlate != null && heldPlate.plateType == Plate.PlateType.Dirty)
@@ -187,6 +211,9 @@ public class RightPlayerController : MonoBehaviour
     {
         if (heldObject != null) // 플레이어가 무언가를 들고 있는 경우
         {
+            // 애니메이션 파라미터 bool 값 코드 추가
+            animator.SetBool(holdingParameterName, true);
+
             Plate heldPlate = heldObject.GetComponent<Plate>();
 
             if (heldPlate != null && heldPlate.plateType == Plate.PlateType.Clean) // 들고 있는 접시가 깨끗한 경우
@@ -199,6 +226,9 @@ public class RightPlayerController : MonoBehaviour
                     {
                         if (cabinetPosition.childCount == 0) // 찬장의 위치가 비어 있는 경우
                         {
+                            // 애니메이션 파라미터 bool 값 코드 추가
+                            animator.SetBool(holdingParameterName, false);
+
                             // 접시를 찬장에 내려놓는다
                             heldObject.SetParent(cabinetPosition);
                             heldObject.position = cabinetPosition.position;
@@ -219,6 +249,9 @@ public class RightPlayerController : MonoBehaviour
         }
         else
         {
+            // 애니메이션 파라미터 bool 값 코드 추가
+            animator.SetBool(holdingParameterName, false);
+
             Debug.Log("플레이어가 접시를 들고 있지 않습니다.");
         }
     }
@@ -227,6 +260,9 @@ public class RightPlayerController : MonoBehaviour
     {
         if (!pickupActivated) // 플레이어가 무언가를 들고 있지 않다면
         {
+            // 애니메이션 파라미터 bool 값 코드 추가
+            animator.SetBool(holdingParameterName, false);
+
             Transform nearestStuff = null;
             float minDistance = float.MaxValue;
 
@@ -243,6 +279,9 @@ public class RightPlayerController : MonoBehaviour
 
             if (nearestStuff != null && minDistance <= maxPickupDistance) // 가장 가까운 재료가 충분히 가깝다면
             {
+                // 애니메이션 파라미터 bool 값 코드 추가
+                animator.SetBool(holdingParameterName, true);
+
                 pickupActivated = true; // 재료를 손에 든다
                 heldObject = nearestStuff;
                 heldObject.position = holdPosition.position; // 재료의 위치를 holdPosition으로 이동
@@ -252,6 +291,9 @@ public class RightPlayerController : MonoBehaviour
         }
         else // 플레이어가 무언가를 들고 있으면
         {
+            // 애니메이션 파라미터 bool 값 코드 추가
+            animator.SetBool(holdingParameterName, true);
+
             Debug.Log("이미 재료를 들고 있습니다.");
         }
     }
