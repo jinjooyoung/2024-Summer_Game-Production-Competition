@@ -20,7 +20,6 @@ public class RightPlayerController : MonoBehaviour
     
     [Header("싱크대")] 
     public List<Transform> snik; // 싱크대 Transform 리스트
-    public List<Transform> snikPosition; // 싱크대 위치 Transform 리스트
     private bool isWashing = false;
     private float washStartTime;
     public float washDuration = 2f; // 설거지에 걸리는 시간 (초)
@@ -29,7 +28,6 @@ public class RightPlayerController : MonoBehaviour
     public List<Transform> cabinetPositions; // 찬장의 위치 Transform 리스트
 
     [Header("중앙 분리 테이블")]
-    public List<Transform> shareTablePositions;
     public List<Transform> stuffs; // 상자 안의 재료들의 Transform 리스트
 
     void Start()
@@ -249,7 +247,7 @@ public class RightPlayerController : MonoBehaviour
                 heldObject = nearestStuff;
                 heldObject.position = holdPosition.position; // 재료의 위치를 holdPosition으로 이동
                 heldObject.SetParent(holdPosition); // 재료를 holdPosition의 자식으로 설정
-                Debug.Log("접시를 획득합니다.");
+                Debug.Log("재료를 획득합니다.");
             }
         }
         else // 플레이어가 무언가를 들고 있으면
