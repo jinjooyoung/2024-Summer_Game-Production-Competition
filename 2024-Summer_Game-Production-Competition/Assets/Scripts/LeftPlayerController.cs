@@ -112,21 +112,18 @@ public class LeftPlayerController : MonoBehaviour
 
             if (nearestItem != null && minDistance <= maxPickupDistance) // 가장 가까운 재료가 충분히 가깝다면
             {
-                // 애니메이션 파라미터 bool 값 코드 추가
-                animator.SetBool(holdingParameterName, true);
-
                 pickupActivated = true; // 재료를 손에 든다
                 heldObject = nearestItem;
                 heldObject.position = holdPosition.position; // 재료의 위치를 holdPosition으로 이동
                 heldObject.SetParent(holdPosition); // 재료를 holdPosition의 자식으로 설정
                 Debug.Log("재료 획득합니다");
+                
+                // 애니메이션 파라미터 bool 값 코드 추가
+                animator.SetBool(holdingParameterName, true);
             }
         }
         else // 플레이어가 무언가를 들고 있으면
         {
-            // 애니메이션 파라미터 bool 값 코드 추가
-            animator.SetBool(holdingParameterName, true);
-
             Debug.Log("이미 재료를 들고 있습니다.");
         }
     }

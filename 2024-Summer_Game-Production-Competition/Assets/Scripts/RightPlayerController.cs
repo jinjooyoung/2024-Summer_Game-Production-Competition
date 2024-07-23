@@ -125,21 +125,18 @@ public class RightPlayerController : MonoBehaviour
 
             if (nearestPlate != null && minDistance <= maxPickupDistance) // 가장 가까운 접시가 충분히 가깝다면
             {
-                // 애니메이션 파라미터 bool 값 코드 추가
-                animator.SetBool(holdingParameterName, true);
-
                 pickupActivated = true; // 접시를 손에 든다
                 heldObject = nearestPlate;
                 heldObject.position = holdPosition.position; // 접시의 위치를 holdPosition으로 이동
                 heldObject.SetParent(holdPosition); // 접시를 holdPosition의 자식으로 설정
                 Debug.Log("접시를 획득합니다.");
+                
+                // 애니메이션 파라미터 bool 값 코드 추가
+                animator.SetBool(holdingParameterName, true);
             }
         }
         else // 플레이어가 무언가를 들고 있으면
         {
-            // 애니메이션 파라미터 bool 값 코드 추가
-            animator.SetBool(holdingParameterName, true);
-
             Debug.Log("이미 접시를 들고 있습니다.");
         }
     }
