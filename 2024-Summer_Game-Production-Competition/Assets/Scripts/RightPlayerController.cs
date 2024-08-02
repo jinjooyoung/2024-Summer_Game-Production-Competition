@@ -31,6 +31,9 @@ public class RightPlayerController : MonoBehaviour
     [Header("중앙 분리 테이블")]
     public List<Transform> stuffs; // 상자 안의 재료들의 Transform 리스트
 
+    [Header("소스")] 
+    public List<Transform> sources;
+
     [Header("애니메이션")]
     public Animator animator;
     public GameObject player;
@@ -48,10 +51,18 @@ public class RightPlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            Pickup();
-            PutPlateInCabinet();
-            PIckOnStuffShareTable();
-            PutStuffsOnThePlate();
+            if (!pickupActivated)
+            {
+                // 접시를 집거나 재료를 집음
+                Pickup();
+                PIckOnStuffShareTable();
+                PickStuffOnPlate();
+            }
+            else
+            {
+                PutPlateInCabinet();
+                PutStuffsOnThePlate();
+            }
         }
 
         if (Input.GetKey(KeyCode.Alpha2))
@@ -360,4 +371,63 @@ public class RightPlayerController : MonoBehaviour
             }
         }
     }
+
+    void PickStuffOnPlate()
+    {
+        if (!pickupActivated) // 플레이어가 무언가를 들고 있지 않은 경우
+        {
+            // 애니메이션 파라미터 bool 값 코드 추가
+            animator.SetBool(holdingParameterName, false);
+
+            Transform nearestPlate = null;
+            float minDistance = float.MaxValue;
+
+            // 모든 접시들과의 거리 계산
+            foreach (Transform plateTransform in plates)
+            {
+                float distance = Vector3.Distance(playerTransform.position, plateTransform.position);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    nearestPlate = plateTransform;
+                }
+            }
+
+            if (nearestPlate != null && minDistance <= maxPickupDistance) // 가장 가까운 접시가 충분히 가깝다면
+            {
+                Plate plateComponent = nearestPlate.GetComponent<Plate>();
+                if (plateComponent != null && plateComponent.plateType == Plate.PlateType.Clean) // 접시가 깨끗한 상태라면
+                {
+                    Transform stuffPos = platesPos[plates.IndexOf(nearestPlate)]; // 접시 위에 재료를 올려놓을 위치를 찾습니다.
+
+                    if (stuffPos.childCount > 0) // 접시 위에 자식 객체가 있는지 확인
+                    {
+                        // 애니메이션 파라미터 bool 값 코드 추가
+                        animator.SetBool(holdingParameterName, true);
+
+                        // 접시 위에 있는 재료를 들고 있는 위치로 옮긴다.
+                        Transform stuff = stuffPos.GetChild(0); // 접시 위에 있는 재료를 선택
+                        heldObject = stuff;
+                        heldObject.SetParent(holdPosition); // 재료를 holdPosition의 자식으로 설정
+                        heldObject.position = holdPosition.position; // 재료의 위치를 holdPosition으로 이동
+                        pickupActivated = true; // 플레이어가 재료를 들고 있는 상태로 변경
+                        Debug.Log("접시 위의 재료를 들었습니다.");
+                    }
+                    else
+                    {
+                        Debug.Log("접시 위에 재료가 없습니다.");
+                    }
+                }
+            }
+        }
+        else
+        {
+            // 애니메이션 파라미터 bool 값 코드 추가
+            animator.SetBool(holdingParameterName, true);
+
+            Debug.Log("이미 무언가를 들고 있습니다.");
+        }
+    }
+
+
 }
