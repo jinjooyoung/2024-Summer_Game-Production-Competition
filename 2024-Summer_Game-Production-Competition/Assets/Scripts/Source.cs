@@ -11,8 +11,11 @@ public class Source : MonoBehaviour
         // 마요네즈
         Myonnaise,
         // 머스타드
-        Mustard
+        Mustard,
+        // 아무것도 없음
+        Nothing
     }
 
     public SourceType sourceType;
+    public bool isDepleted = false;
 }

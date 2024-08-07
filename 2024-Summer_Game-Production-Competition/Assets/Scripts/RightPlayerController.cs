@@ -33,6 +33,12 @@ public class RightPlayerController : MonoBehaviour
 
     [Header("소스")] 
     public List<Transform> sources;
+    private bool isPouring = false;
+    private float pourStartTime;
+    public float pourDuration = 2f; // 소스를 뿌리는 시간 (초)
+    private Source currentSource;
+    private Source heldSource;
+
 
     [Header("애니메이션")]
     public Animator animator;
@@ -55,7 +61,7 @@ public class RightPlayerController : MonoBehaviour
             {
                 // 접시를 집거나 재료를 집음
                 Pickup();
-                PIckOnStuffShareTable();
+                PickOnStuffShareTable();
                 PickStuffOnPlate();
             }
             else
@@ -80,6 +86,23 @@ public class RightPlayerController : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Alpha2))
         {
             StopWashing();
+        }
+
+        if (Input.GetKey(KeyCode.Alpha3))
+        {
+            if (!isPouring)
+            {
+                StartPouring();
+            }
+            else
+            {
+                ContinuePouring();
+            }
+        }
+        
+        if (Input.GetKeyUp(KeyCode.Alpha3))
+        {
+            StopPouring();
         }
     }
 
@@ -266,7 +289,7 @@ public class RightPlayerController : MonoBehaviour
         }
     }
 
-    void PIckOnStuffShareTable()
+    void PickOnStuffShareTable()
     {
         if (!pickupActivated) // 플레이어가 무언가를 들고 있지 않다면
         {
@@ -429,5 +452,77 @@ public class RightPlayerController : MonoBehaviour
         }
     }
 
+    void StartPouring()
+    {
+        if (heldObject != null)
+        {
+            Plate heldPlate = heldObject.GetComponent<Plate>();
 
+            if (heldPlate != null && heldPlate.plateType == Plate.PlateType.Clean)
+            {
+                foreach (Transform source in sources)
+                {
+                    float distanceToSource = Vector3.Distance(playerTransform.position, source.position);
+                    if (distanceToSource <= maxPickupDistance)
+                    {
+                        Source sourceComponent = source.GetComponent<Source>();
+                        if (sourceComponent != null && !sourceComponent.isDepleted)
+                        {
+                            if (!isPouring)
+                            {
+                                isPouring = true;
+                                pourStartTime = Time.time;
+                                currentSource = sourceComponent;
+                                Debug.Log($"{sourceComponent.sourceType} 소스 뿌리기 시작");
+                            }
+                            return;
+                        }
+                        else if (sourceComponent != null && sourceComponent.isDepleted)
+                        {
+                            Debug.Log($"{sourceComponent.sourceType} 소스가 다 뿌려졌습니다.");
+                        }
+                    }
+                }
+                Debug.Log("소스와 너무 멀리 떨어져 있습니다.");
+            }
+            else
+            {
+                Debug.Log("깨끗한 접시가 필요합니다.");
+            }
+        }
+        else
+        {
+            Debug.Log("플레이어가 접시를 들고 있지 않습니다.");
+        }
+    }
+
+    void ContinuePouring()
+    {
+        if (isPouring)
+        {
+            float elapsed = Time.time - pourStartTime;
+            if (elapsed >= pourDuration)
+            {
+                isPouring = false;
+                if (currentSource != null)
+                {
+                    currentSource.isDepleted = true;
+                    Debug.Log($"{currentSource.sourceType} 소스를 다 뿌렸습니다.");
+                }
+            }
+            else
+            {
+                Debug.Log("소스 뿌리는 중... (" + elapsed + "/" + pourDuration + "초)");
+            }
+        }
+    }
+
+    void StopPouring()
+    {
+        if (isPouring)
+        {
+            isPouring = false;
+            Debug.Log("소스 뿌리기를 멈췄습니다.");
+        }
+    }
 }
