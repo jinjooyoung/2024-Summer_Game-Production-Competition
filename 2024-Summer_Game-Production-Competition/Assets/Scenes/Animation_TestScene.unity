@@ -848,6 +848,8 @@ MonoBehaviour:
   - {fileID: 471900955}
   - {fileID: 1242167389}
   pourDuration: 1
+  servingTable: {fileID: 1524886943}
+  servingPos: {fileID: 1857726428}
   animator: {fileID: 82698101}
   player: {fileID: 82698100}
   speedParameterName: Speed

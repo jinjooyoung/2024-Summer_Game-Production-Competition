@@ -39,7 +39,10 @@ public class RightPlayerController : MonoBehaviour
     private Source currentSource;
     private Source heldSource;
 
-
+    [Header("서빙")]
+    public Transform servingTable; 
+    public Transform servingPos; 
+    
     [Header("애니메이션")]
     public Animator animator;
     public GameObject player;
@@ -68,6 +71,7 @@ public class RightPlayerController : MonoBehaviour
             {
                 PutPlateInCabinet();
                 PutStuffsOnThePlate();
+                ServingFood();
             }
         }
 
@@ -525,4 +529,56 @@ public class RightPlayerController : MonoBehaviour
             Debug.Log("소스 뿌리기를 멈췄습니다.");
         }
     }
+
+    void ServingFood()
+    {
+        if (heldObject != null) // 플레이어가 무언가를 들고 있는 경우
+        {
+            // 들고 있는 객체가 접시인지 확인
+            Plate heldPlate = heldObject.GetComponent<Plate>();
+            if (heldPlate != null && heldPlate.plateType == Plate.PlateType.Clean)
+            {
+                // HoldPosition 안에 있는 접시의 자식으로 재료가 있는지 확인
+                Transform holdPosition = heldPlate.transform.parent;
+                if (holdPosition != null && heldPlate.transform.childCount > 0) // 접시의 자식 오브젝트(재료) 확인
+                {
+                    float distanceToServingTable = Vector3.Distance(playerTransform.position, servingTable.position);
+                    if (distanceToServingTable <= maxPickupDistance) // 서빙 테이블과 충분히 가까운지 확인
+                    {
+                        // 접시를 서빙 위치로 이동
+                        heldObject.SetParent(servingPos);
+                        heldObject.position = servingPos.position;
+                        heldObject.rotation = servingPos.rotation;
+
+                        // 플레이어의 손에서 접시를 제거
+                        pickupActivated = false;
+                        heldObject = null;
+
+                        // 애니메이션 파라미터 bool 값 코드 추가
+                        animator.SetBool(holdingParameterName, false);
+
+                        Debug.Log("음식을 서빙했습니다.");
+                    }
+                    else
+                    {
+                        Debug.Log("서빙 테이블과 너무 멀리 떨어져 있습니다.");
+                    }
+                }
+                else
+                {
+                    Debug.Log("접시에 재료가 없습니다. 서빙할 수 없습니다.");
+                }
+            }
+            else
+            {
+                Debug.Log("재료가 있는 접시를 들고 있지 않습니다.");
+            }
+        }
+        else
+        {
+            Debug.Log("플레이어가 접시를 들고 있지 않습니다.");
+        }
+    }
+
+
 }
